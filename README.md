@@ -9,20 +9,21 @@ A beautiful vocabulary learning app inspired by [Vocabulary by Monkey Taps](http
 ## 📱 Features
 
 ### Core Features
-- **Complete Onboarding Flow (5 screens)**
-  1. Welcome screen with animated preview cards
-  2. Level selection (Beginner / Intermediate / Advanced)
-  3. Category selection (Emotions, Nature, Business, Beautiful Words, Academic, Everyday)
-  4. Theme selection (Midnight, Sunset, Ocean, Forest, Aurora, Minimal)
-  5. Feature introduction with instructional hints
-  
+- **Streamlined Two-Phase Onboarding (5 screens)**
+  1. Welcome screen with gradient button
+  2. Name + Age input (combined, optional, with skip)
+  3. Level selection (Beginner / Intermediate / Advanced, with skip)
+  4. Category selection (Emotions, Nature, Business, Beautiful Words, Academic, Everyday, with skip)
+  5. Get Started confirmation
+
 - **Word Learning Home Screen**
-  - Beautiful swipeable word cards
-  - 40+ vocabulary words across 6 categories and 3 levels
-  - Dynamic gradient backgrounds per word
+  - Beautiful swipeable word cards (max 5 words per session)
+  - 150 vocabulary words across 6 categories and 3 levels
+  - Dynamic themed gradient backgrounds
   - Word category badges
-  - Bookmark/save functionality
+  - Mastered words tracking with golden badge
   - Word, pronunciation (with speaker icon), part of speech, definition, and example sentence
+  - Progress badge showing mastered count
 
 ### UX Enhancements
 - **Squad Busters-Inspired Haptics**
@@ -38,10 +39,12 @@ A beautiful vocabulary learning app inspired by [Vocabulary by Monkey Taps](http
   - Floating card previews in onboarding
 
 - **Personalization**
-  - 6 different theme options
+  - 6 beautiful themes (Midnight, Sunset, Ocean, Forest, Violet, Minimal)
   - 6 word categories to choose from
-  - Words filtered by selected categories and level
-  - Saved words collection
+  - Words filtered by selected categories and level (max 5 per session)
+  - Mastered words collection with review screen
+  - Animated gradient background (onboarding) / Static gradient (home)
+  - Theme switcher accessible from home screen
 
 ### 🌟 Personal Touch Feature: Word Mastery Celebration
 
@@ -58,28 +61,46 @@ This transforms passive browsing into active learning engagement, giving users a
 
 ## 🏗 Architecture
 
+Clean MVVM architecture with feature-based organization:
+
 ```
 VocabularyApp/
-├── VocabularyAppApp.swift      # App entry point
-├── ContentView.swift            # Main navigation controller
-├── Models/
-│   └── Word.swift              # Word data model with 40+ vocabulary words
-├── ViewModels/
-│   └── AppState.swift          # App-wide state (level, categories, theme, saved words)
-├── Views/
+├── App/
+│   ├── VocabularyApp.swift              # App entry point
+│   ├── ContentView.swift                # Main navigation controller
+│   └── AppState.swift                   # App-wide state management
+├── Core/
+│   ├── Models/
+│   │   ├── AppModels.swift              # Level, Category, Theme enums
+│   │   └── Word.swift                   # 150 vocabulary words
+│   ├── Haptics/
+│   │   └── HapticManager.swift          # Squad Busters-style haptic feedback
+│   └── Utilities/
+│       └── Color+Extensions.swift       # Hex color support
+├── Features/
 │   ├── Onboarding/
-│   │   ├── OnboardingContainerView.swift
-│   │   ├── WelcomeOnboardingView.swift    # Animated welcome
-│   │   ├── LevelSelectionView.swift       # Level picker
-│   │   ├── CategorySelectionView.swift    # Category selection (NEW)
-│   │   ├── ThemeSelectionView.swift       # Theme customization (NEW)
-│   │   └── GetStartedView.swift           # Final intro
-│   └── Home/
-│       ├── HomeView.swift                 # Main screen with theme support
-│       └── WordCardPager.swift            # Swipeable cards with save button
-└── Utils/
-    ├── Color+Extensions.swift   # Hex color support & theme colors
-    └── HapticManager.swift      # Squad Busters-style haptic system
+│   │   ├── Steps/
+│   │   │   ├── WelcomeOnboardingView.swift
+│   │   │   ├── NameAgeInputView.swift         # Combined input (NEW)
+│   │   │   ├── LevelSelectionView.swift
+│   │   │   ├── CategorySelectionView.swift
+│   │   │   └── GetStartedView.swift
+│   │   ├── UIComponents/
+│   │   │   ├── OnboardingContainerView.swift  # Main container
+│   │   │   └── OnboardingButton.swift         # Reusable button
+│   │   └── ViewModels/
+│   │       └── OnboardingViewModel.swift
+│   └── WordDeck/
+│       ├── Views/
+│       │   ├── HomeView.swift                 # Main screen
+│       │   └── WordCardPager.swift            # Card pager (max 5 words)
+│       ├── UIComponents/
+│       │   ├── WordCardView.swift             # Refactored card (11 components)
+│       │   └── ThemeSelectionView.swift       # Theme picker components
+│       └── ViewModels/
+│           └── WordDeckViewModel.swift
+└── Resources/
+    └── Assets.xcassets/                       # App icons & assets
 ```
 
 ## 🎨 Design Decisions
